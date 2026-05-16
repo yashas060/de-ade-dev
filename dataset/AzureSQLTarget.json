@@ -1,0 +1,32 @@
+{
+	"name": "AzureSQLTarget",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azure_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "YEAR_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MONTH_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TotalSales",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "sales_mart1",
+			"table": "SalesAggregate"
+		}
+	}
+}
