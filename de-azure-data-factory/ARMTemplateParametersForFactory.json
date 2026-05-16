@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "de-azure-data-factory"
+		},
+		"adls_conn_accountKey": {
+			"value": ""
+		},
+		"azure_sqldb_password": {
+			"value": ""
+		},
+		"adls_conn_properties_typeProperties_url": {
+			"value": "https://hierarchialstorage1.dfs.core.windows.net/"
+		},
+		"azure_sqldb_properties_typeProperties_server": {
+			"value": "ade-sql-server.database.windows.net"
+		},
+		"azure_sqldb_properties_typeProperties_database": {
+			"value": "ade-sql-db"
+		},
+		"azure_sqldb_properties_typeProperties_userName": {
+			"value": "adeadmin"
+		}
+	}
+}

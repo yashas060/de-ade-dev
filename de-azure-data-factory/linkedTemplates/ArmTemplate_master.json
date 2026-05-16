@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "de-azure-data-factory"
+		},
+		"adls_conn_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'adls_conn'"
+		},
+		"azure_sqldb_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'azure_sqldb'"
+		},
+		"adls_conn_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://hierarchialstorage1.dfs.core.windows.net/"
+		},
+		"azure_sqldb_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "ade-sql-server.database.windows.net"
+		},
+		"azure_sqldb_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ade-sql-db"
+		},
+		"azure_sqldb_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "adeadmin"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "de-azure-data-factory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"adls_conn_accountKey": {
+						"value": "[parameters('adls_conn_accountKey')]"
+					},
+					"azure_sqldb_password": {
+						"value": "[parameters('azure_sqldb_password')]"
+					},
+					"adls_conn_properties_typeProperties_url": {
+						"value": "[parameters('adls_conn_properties_typeProperties_url')]"
+					},
+					"azure_sqldb_properties_typeProperties_server": {
+						"value": "[parameters('azure_sqldb_properties_typeProperties_server')]"
+					},
+					"azure_sqldb_properties_typeProperties_database": {
+						"value": "[parameters('azure_sqldb_properties_typeProperties_database')]"
+					},
+					"azure_sqldb_properties_typeProperties_userName": {
+						"value": "[parameters('azure_sqldb_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
