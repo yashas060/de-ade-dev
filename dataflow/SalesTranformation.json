@@ -1,0 +1,72 @@
+{
+	"name": "SalesTranformation",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Sales_Source",
+						"type": "DatasetReference"
+					},
+					"name": "SalesSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSQLTarget",
+						"type": "DatasetReference"
+					},
+					"name": "azuresqltarget"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filterbasedonsales"
+				},
+				{
+					"name": "aggregatemntyr"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ORDERNUMBER as short,",
+				"          QUANTITYORDERED as short,",
+				"          PRICEEACH as double,",
+				"          ORDERLINENUMBER as short,",
+				"          SALES as double,",
+				"          ORDERDATE as timestamp,",
+				"          STATUS as string,",
+				"          QTR_ID as short,",
+				"          MONTH_ID as short,",
+				"          YEAR_ID as short",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     rowUrlColumn: 'filepath') ~> SalesSource",
+				"SalesSource filter(SALES >= 2000) ~> filterbasedonsales",
+				"filterbasedonsales aggregate(groupBy(YEAR_ID,",
+				"          MONTH_ID),",
+				"     TOTALSALES = sum(SALES)) ~> aggregatemntyr",
+				"aggregatemntyr sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          YEAR_ID as integer,",
+				"          MONTH_ID as integer,",
+				"          TotalSales as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> azuresqltarget"
+			]
+		}
+	}
+}
